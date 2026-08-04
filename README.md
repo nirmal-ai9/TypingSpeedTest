@@ -346,7 +346,7 @@ Create a Pull Request after pushing your changes.
 
 B.Sc. CSIT Student
 
-Frontend Developer | Django Developer | Data Enthusiast
+Frontend Developer | Django Developer | ML Enthusiast
 
 
 GitHub:
