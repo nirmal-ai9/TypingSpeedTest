@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TypeFlow | Typing Speed Test</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow"></div>
+
+
+    <!-- Animated Background -->
+    <div class="background">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+
+    <!-- Main Application -->
+
+    <main class="container">
+
+
+        <!-- Header -->
+
+        <header class="header">
+
+            <div class="brand">
+
+                <span class="logo">
+                    ⌨️
+                </span>
+
+
+                <div class="brand-text">
+
+                    <h1>
+                        TypeFlow
+                    </h1>
+
+                    <p>
+                        Improve your typing speed and accuracy
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="status">
+
+                <span class="dot"></span>
+
+                <span>
+                    Ready
+                </span>
+
+            </div>
+
+
+        </header>
+
+
+
+
+        <!-- Settings Section -->
+
+        <section class="settings">
+
+
+            <div class="setting-card">
+
+                <label for="difficulty">
+                    Difficulty
+                </label>
+
+
+                <select id="difficulty">
+
+                    <option value="easy">
+                        Easy
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="hard">
+                        Hard
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+
+
+            <div class="setting-card">
+
+                <label for="time">
+                    Duration
+                </label>
+
+
+                <select id="time">
+
+                    <option value="30">
+                        30 Seconds
+                    </option>
+
+                    <option value="60" selected>
+                        60 Seconds
+                    </option>
+
+                    <option value="120">
+                        120 Seconds
+                    </option>
+
+
+                </select>
+
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+        <!-- Timer Section -->
+
+        <section class="timer-container">
+
+
+            <div class="timer-circle">
+
+
+                <svg width="150" height="150">
+
+
+                    <circle
+                        class="timer-background"
+                        cx="75"
+                        cy="75"
+                        r="60">
+                    </circle>
+
+
+
+                    <circle
+                        class="progress-ring"
+                        cx="75"
+                        cy="75"
+                        r="60">
+                    </circle>
+
+
+                </svg>
+
+
+
+                <div class="timer-text">
+
+                    <span id="timer">
+                        60
+                    </span>
+
+
+                    <small>
+                        SEC
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- Paragraph Display -->
+
+        <section class="paragraph-box">
+
+
+            <p id="paragraph">
+                Loading paragraph...
+            </p>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- Typing Input -->
+
+        <section class="typing-area">
+
+
+            <textarea
+
+                id="input"
+
+                placeholder="Press Start Test and begin typing..."
+
+                disabled
+
+                aria-label="Typing input area">
+
+            </textarea>
+
+
+        </section>
+
+
+
+
+
+
+
+
+
+        <!-- Statistics -->
+
+        <section class="stats">
+
+
+
+            <div class="card">
+
+                <h3>
+                    ⚡
+                </h3>
+
+                <span id="wpm">
+                    0
+                </span>
+
+                <small>
+                    WPM
+                </small>
+
+            </div>
+
+
+
+
+
+            <div class="card">
+
+                <h3>
+                    🎯
+                </h3>
+
+                <span id="accuracy">
+                    100%
+                </span>
+
+                <small>
+                    Accuracy
+                </small>
+
+            </div>
+
+
+
+
+
+            <div class="card">
+
+                <h3>
+                    ❌
+                </h3>
+
+                <span id="mistakes">
+                    0
+                </span>
+
+                <small>
+                    Mistakes
+                </small>
+
+            </div>
+
+
+
+
+
+            <div class="card">
+
+                <h3>
+                    🔥
+                </h3>
+
+                <span id="cpm">
+                    0
+                </span>
+
+                <small>
+                    CPM
+                </small>
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- Action Buttons -->
+
+        <div class="buttons">
+
+
+            <button 
+                id="start"
+                type="button">
+
+                Start Test
+
+            </button>
+
+
+
+
+            <button
+                id="restart"
+                type="button">
+
+                Restart
+
+            </button>
+
+
+
+
+
+            <button
+                id="next"
+                type="button">
+
+                Next Text
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </main>
+
+<!-- Result Modal -->
+
+<div class="modal-overlay" id="resultModal">
+
+
+    <div class="result-box">
+
+
+        <button 
+        class="close-modal"
+        id="closeModal">
+
+            ×
+
+        </button>
+
+
+
+        <h2>
+            🎉 Test Complete
+        </h2>
+
+
+        <p class="result-message">
+            Great job! Keep practicing.
+        </p>
+
+
+
+
+        <div class="result-stats">
+
+
+            <div>
+
+                <span id="finalWpm">
+                    0
+                </span>
+
+                <small>
+                    WPM
+                </small>
+
+            </div>
+
+
+
+
+            <div>
+
+                <span id="finalAccuracy">
+                    0%
+                </span>
+
+                <small>
+                    Accuracy
+                </small>
+
+            </div>
+
+
+
+
+
+            <div>
+
+                <span id="finalCpm">
+                    0
+                </span>
+
+                <small>
+                    CPM
+                </small>
+
+            </div>
+
+
+
+
+
+            <div>
+
+                <span id="finalMistakes">
+                    0
+                </span>
+
+                <small>
+                    Mistakes
+                </small>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="best-score">
+
+            🏆 Best:
+
+            <span id="bestScore">
+                0
+            </span>
+
+            WPM
+
+
+        </div>
+
+
+
+
+        <button 
+        id="playAgain"
+        type="button">
+
+            Play Again
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+    <!-- JavaScript Files -->
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script src="paragraphs.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+</html>
