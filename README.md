@@ -1,10 +1,15 @@
 # ⌨️ TypeFlow — Typing Speed Test
 
-![TypeFlow Banner](screenshots/banner.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/dd481001-7b99-446f-a7f2-64792c5442fa" width="1280" height="640" alt="TypeFlow Banner">
+</p>
 
-TypeFlow is a modern and interactive **Typing Speed Test Web Application** built using **HTML, CSS, and JavaScript**. It helps users improve their typing speed, accuracy, and productivity by providing real-time feedback, performance statistics, and an engaging user experience.
 
-The application combines a premium glassmorphism UI with smooth animations, real-time typing analysis, and personalized performance tracking.
+TypeFlow is a modern and interactive **Typing Speed Test Web Application** built using **HTML, CSS, and JavaScript**.
+
+It helps users improve their typing speed, accuracy, and productivity by providing real-time feedback, performance statistics, and an engaging user experience.
+
+The application combines a premium **glassmorphism UI**, smooth animations, real-time typing analysis, and personalized performance tracking.
 
 ---
 
@@ -40,9 +45,9 @@ The application combines a premium glassmorphism UI with smooth animations, real
 - Animated gradient background
 - Floating glowing background effects
 - Cursor-following glow effect
-- 3D card tilt interaction
+- 3D card interaction
 - Smooth transitions and animations
-- Responsive design for all devices
+- Responsive design
 
 
 ## 🏆 Performance Tracking
@@ -69,52 +74,54 @@ The application combines a premium glassmorphism UI with smooth animations, real
 # 🚀 Live Demo
 
 ```
-https://yourusername.github.io/Typing-Speed-Test/
+https://pokhrelsamir.github.io/TypingSpeedTest/
 ```
 
 ---
 
 # 📸 Screenshots
 
+
 ## 🏠 Home Interface
 
-![Home Screen](screenshots/home.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8fd50882-98f6-4f00-8f4d-bb8c7196c2b0" width="900" alt="Home Screen">
+</p>
 
 
 ## ⌨️ Typing Test
 
-![Typing Screen](screenshots/typing.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/90baad98-bd0b-4420-885c-0a01723b4df9" width="900" alt="Typing Screen">
+</p>
 
 
 ## 🎉 Result Dashboard
 
-![Result Screen](screenshots/result.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/10e1ded2-b5e6-4a57-aa4a-ca1ef25ffa8c" width="900" alt="Result Screen">
+</p>
+
 
 ---
 
 # 🛠️ Technologies Used
 
-## Frontend Technologies
 
 | Technology | Purpose |
 |------------|---------|
 | HTML5 | Website structure |
 | CSS3 | Styling, animations, responsive design |
 | JavaScript ES6 | Application logic and interactions |
-
-
-## External Resources
-
-| Resource | Purpose |
-|----------|---------|
 | Google Fonts | Modern typography |
 | Canvas Confetti | Celebration animation |
+
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 Typing-Speed-Test/
 
 │
@@ -123,73 +130,69 @@ Typing-Speed-Test/
 │       └── key.mp3
 │
 ├── screenshots/
-│   ├── banner.png
-│   ├── home.png
-│   ├── typing.png
-│   └── result.png
+│   └── banner.png
 │
 ├── index.html
 ├── style.css
 ├── script.js
 ├── paragraphs.js
 │
-├── README.md
-└── LICENSE
+└── README.md
 ```
 
 ---
 
 # ⚙️ Installation & Setup
 
+
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/Typing-Speed-Test.git
+git clone https://github.com/pokhrelsamir/TypingSpeedTest.git
 ```
 
----
 
 ## Navigate to Project Directory
 
 ```bash
-cd Typing-Speed-Test
+cd TypingSpeedTest
 ```
 
----
 
 ## Run Application
 
 Open:
 
-```
+```text
 index.html
 ```
 
 in your browser.
 
-No additional installation or dependencies are required.
+No additional dependencies are required.
 
 ---
 
 # 🎮 How To Use
 
-1. Open the TypeFlow application
-2. Select your preferred difficulty level
+1. Open TypeFlow
+2. Select difficulty level
 3. Choose test duration
-4. Click the **Start Test** button
+4. Click **Start Test**
 5. Type the displayed paragraph
-6. Monitor your live performance:
+6. Monitor:
    - WPM
    - CPM
    - Accuracy
    - Mistakes
-7. View your final typing result
+7. View your final result
+
 
 ---
 
 # 🧠 Application Workflow
 
-```
+```text
 User Opens Website
 
         ↓
@@ -229,25 +232,24 @@ Save Best Score
 
 # 📊 Calculation Logic
 
+
 ## Words Per Minute (WPM)
 
-```
+```text
 WPM = Typed Characters / 5 / Time(minutes)
 ```
 
----
 
 ## Characters Per Minute (CPM)
 
-```
+```text
 CPM = Total Typed Characters / Time(minutes)
 ```
 
----
 
 ## Accuracy
 
-```
+```text
 Accuracy =
 Correct Characters /
 Total Typed Characters × 100
@@ -256,6 +258,7 @@ Total Typed Characters × 100
 ---
 
 # 🎯 Key Functional Modules
+
 
 ## 1. Paragraph Management
 
@@ -294,11 +297,10 @@ Calculates:
 - Stores personal best score
 - Provides performance feedback
 
+
 ---
 
 # 🔮 Future Improvements
-
-Future enhancements planned:
 
 - [ ] User authentication system
 - [ ] Online leaderboard
@@ -311,62 +313,58 @@ Future enhancements planned:
 - [ ] Multiplayer typing race
 - [ ] Backend integration
 
+
 ---
 
 # 🤝 Contribution
 
+
 Contributions are welcome.
 
-Follow these steps:
-
-### 1. Fork Repository
-
-### 2. Create New Branch
 
 ```bash
 git checkout -b feature/new-feature
 ```
 
-### 3. Commit Changes
-
 ```bash
 git commit -m "Add new feature"
 ```
-
-### 4. Push Changes
 
 ```bash
 git push origin feature/new-feature
 ```
 
-### 5. Create Pull Request
+
+Create a Pull Request after pushing your changes.
 
 ---
 
 # 👨‍💻 Author
 
+
 ## Samir Pokhrel
 
-B.Sc. CSIT Student  
+B.Sc. CSIT Student
+
 Frontend Developer | Django Developer | Data Enthusiast
+
 
 GitHub:
 
-```
-https://github.com/yourusername
-```
+https://github.com/pokhrelsamir
+
 
 LinkedIn:
 
-```
-https://linkedin.com/in/yourprofile
-```
+https://www.linkedin.com/in/samirpokhrel/
+
 
 ---
 
 # 📄 License
 
 This project is licensed under the MIT License.
+
 
 ---
 
