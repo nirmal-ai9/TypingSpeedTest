@@ -1,7 +1,9 @@
 // ================================================
 // DOM ELEMENTS
 // ================================================
-
+const keySound = new Audio(
+    "assets/sounds/key.mp3"
+);
 
 const paragraphElement =
 document.getElementById("paragraph");
@@ -512,7 +514,15 @@ function checkTyping(){
 
 input.addEventListener(
     "input",
-    checkTyping
+    ()=>{
+
+        keySound.currentTime = 0;
+
+        keySound.play();
+
+        checkTyping();
+
+    }
 );
 
 
@@ -594,22 +604,28 @@ function updateStatistics(){
 function showResult(){
 
 
-    finalWpm.textContent =
-    wpm.textContent;
+    animateNumber(
+    finalWpm,
+    Number(wpm.textContent)
+);
 
 
     finalAccuracy.textContent =
     accuracy.textContent;
 
 
-    finalCpm.textContent =
-    cpm.textContent;
+    animateNumber(
+    finalCpm,
+    Number(cpm.textContent)
+);
 
 
-    finalMistakes.textContent =
-    mistakes.textContent;
+    animateNumber(
+    finalMistakes,
+    Number(mistakes.textContent)
+);
 
-
+    celebrate();
 
     let best =
     localStorage.getItem("bestWpm") || 0;
@@ -684,3 +700,74 @@ function celebrate(){
 
 
 }
+
+
+function animateNumber(element,value){
+
+
+    let current=0;
+
+
+    const increment =
+    Math.ceil(value/40);
+
+
+
+    const counter =
+    setInterval(()=>{
+
+
+        current += increment;
+
+
+        if(current >= value){
+
+
+            current=value;
+
+
+            clearInterval(counter);
+
+
+        }
+
+
+        element.textContent=current;
+
+
+    },30);
+
+
+}
+
+
+const themeToggle =
+document.getElementById("themeToggle");
+
+
+themeToggle.addEventListener(
+"click",
+()=>{
+
+
+    document.body
+    .classList.toggle("light");
+
+
+    if(
+        document.body
+        .classList.contains("light")
+    ){
+
+        themeToggle.textContent="🌙";
+
+    }
+
+    else{
+
+        themeToggle.textContent="☀️";
+
+    }
+
+
+});
