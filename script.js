@@ -1,773 +1,237 @@
-// ================================================
+
 // DOM ELEMENTS
-// ================================================
-const keySound = new Audio(
-    "assets/sounds/key.mp3"
-);
 
-const paragraphElement =
-document.getElementById("paragraph");
+const keySound = new Audio("assets/sounds/key.mp3");
 
-
-const input =
-document.getElementById("input");
-
-
-const startButton =
-document.getElementById("start");
-
-
-const restartButton =
-document.getElementById("restart");
-
-
-const nextButton =
-document.getElementById("next");
-
-
-const timerElement =
-document.getElementById("timer");
-
-
-const difficulty =
-document.getElementById("difficulty");
-
-
-const timeSelect =
-document.getElementById("time");
-
-
-const status =
-document.querySelector(".status span:last-child");
-
-
+const paragraphElement = document.getElementById("paragraph");
+const input = document.getElementById("input");
+const startButton = document.getElementById("start");
+const restartButton = document.getElementById("restart");
+const nextButton = document.getElementById("next");
+const timerElement = document.getElementById("timer");
+const difficulty = document.getElementById("difficulty");
+const timeSelect = document.getElementById("time");
+const status = document.querySelector(".status span:last-child");
+const themeToggle = document.getElementById("themeToggle");
 
 // Statistics
+const wpm = document.getElementById("wpm");
+const accuracy = document.getElementById("accuracy");
+const mistakes = document.getElementById("mistakes");
+const cpm = document.getElementById("cpm");
 
-const wpm =
-document.getElementById("wpm");
-
-const accuracy =
-document.getElementById("accuracy");
-
-const mistakes =
-document.getElementById("mistakes");
-
-const cpm =
-document.getElementById("cpm");
-
-
-
-
-// ================================================
-// VARIABLES
-// ================================================
-
+// STATE
 
 let currentText = "";
-
-let timer = 60;
-
 let timeLeft = 60;
-
 let timerInterval = null;
-
 let started = false;
-
-let typedCharacters = 0;
-
 let correctCharacters = 0;
-
 let incorrectCharacters = 0;
-
 let startTime = null;
 
+// PARAGRAPH
 
+function loadParagraph() {
+  const filtered = paragraphs.filter(
+    (item) => item.difficulty === difficulty.value
+  );
+  const { text } = filtered[Math.floor(Math.random() * filtered.length)];
+  currentText = text;
 
+  paragraphElement.innerHTML = "";
+  const fragment = document.createDocumentFragment();
 
-// ================================================
-// LOAD RANDOM PARAGRAPH
-// ================================================
+  currentText.split("").forEach((character) => {
+    const span = document.createElement("span");
+    span.textContent = character;
+    fragment.appendChild(span);
+  });
 
-
-function loadParagraph(){
-
-
-    const selectedDifficulty =
-    difficulty.value;
-
-
-    const filtered =
-    paragraphs.filter(
-        item =>
-        item.difficulty === selectedDifficulty
-    );
-
-
-    const random =
-    filtered[
-        Math.floor(
-            Math.random()*filtered.length
-        )
-    ];
-
-
-    currentText =
-    random.text;
-
-
-    paragraphElement.innerHTML =
-    "";
-
-
-    currentText
-    .split("")
-    .forEach(character=>{
-
-
-        const span =
-        document.createElement("span");
-
-
-        span.textContent =
-        character;
-
-
-        paragraphElement.appendChild(span);
-
-
-    });
-
-
+  paragraphElement.appendChild(fragment);
 }
 
+// TIMER
 
+function loadTimer() {
+  timeLeft = Number(timeSelect.value);
+  timerElement.textContent = timeLeft;
+}
 
+function updateTimer() {
+  timerElement.textContent = timeLeft;
+  if (timeLeft <= 0) finishTest();
+}
 
-// ================================================
-// UPDATE TIMER
-// ================================================
+// TEST FLOW
 
+function startTest() {
+  if (started) return;
 
-function updateTimer(){
+  started = true;
+  startTime = new Date();
 
+  input.disabled = false;
+  input.focus();
 
-    timerElement.textContent =
-    timeLeft;
+  status.textContent = "Typing";
+  document.querySelector(".status").classList.add("typing-status");
 
+  startButton.disabled = true;
+  startButton.classList.add("active");
 
-    if(timeLeft <= 0){
+  loadTimer();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+  }, 1000);
+}
 
-        finishTest();
+function finishTest() {
+  clearInterval(timerInterval);
+  started = false;
+  input.disabled = true;
 
+  status.textContent = "Finished";
+  startButton.disabled = false;
+  startButton.classList.remove("active");
+
+  showResult();
+}
+
+function restartTest() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  started = false;
+
+  input.value = "";
+  input.disabled = true;
+
+  startButton.disabled = false;
+  startButton.classList.remove("active");
+
+  document.querySelector(".status").classList.remove("typing-status");
+  status.textContent = "Ready";
+
+  loadTimer();
+  resetStats();
+  loadParagraph();
+}
+
+function nextParagraph() {
+  loadParagraph();
+  restartTest();
+}
+
+// TYPING / STATS
+
+function checkTyping() {
+  const typed = input.value;
+  const characters = paragraphElement.querySelectorAll("span");
+
+  correctCharacters = 0;
+  incorrectCharacters = 0;
+
+  characters.forEach((character, index) => {
+    const typedChar = typed[index];
+
+    if (typedChar == null) {
+      character.className = "";
+    } else if (typedChar === character.textContent) {
+      character.className = "correct";
+      correctCharacters++;
+    } else {
+      character.className = "incorrect";
+      incorrectCharacters++;
     }
+  });
 
-
+  updateStatistics();
 }
 
+function updateStatistics() {
+  const typedLength = input.value.length;
+  const minutesElapsed = (new Date() - startTime) / 1000 / 60;
 
+  if (minutesElapsed > 0) {
+    const words = typedLength / 5;
+    wpm.textContent = Math.round(words / minutesElapsed);
+    cpm.textContent = Math.round(typedLength / minutesElapsed);
+  }
 
-// ================================================
-// START TEST
-// ================================================
+  const total = correctCharacters + incorrectCharacters;
+  if (total > 0) {
+    accuracy.textContent = `${Math.round((correctCharacters / total) * 100)}%`;
+  }
 
-
-function startTest(){
-
-
-    if(started)
-        return;
-
-
-
-    started = true;
-
-
-    input.disabled = false;
-
-    input.focus();
-
-
-
-    startTime = new Date();
-
-
-
-    status.textContent =
-    "Typing";
-
-
-
-    document.querySelector(".status")
-    .classList.add("typing-status");
-
-
-
-    startButton.disabled = true;
-
-
-
-    startButton.classList.add("active");
-
-
-
-    loadTimer();
-
-
-
-    timerInterval = setInterval(()=>{
-
-
-        timeLeft--;
-
-
-        updateTimer();
-
-
-
-    },1000);
-
-
-
+  mistakes.textContent = incorrectCharacters;
 }
 
-
-
-
-// ================================================
-// TIMER SETUP
-// ================================================
-
-
-function loadTimer(){
-
-
-    timer =
-    Number(timeSelect.value);
-
-
-    timeLeft =
-    timer;
-
-
-    timerElement.textContent =
-    timeLeft;
-
-
+function resetStats() {
+  wpm.textContent = 0;
+  cpm.textContent = 0;
+  mistakes.textContent = 0;
+  accuracy.textContent = "100%";
 }
 
+// RESULTS
 
+function animateNumber(element, value) {
+  let current = 0;
+  const increment = Math.ceil(value / 40) || 1;
 
-// ================================================
-// FINISH TEST
-// ================================================
-
-
-function finishTest(){
-
-
-    clearInterval(timerInterval);
-
-
-
-    input.disabled=true;
-
-
-
-    started=false;
-
-
-
-    status.textContent =
-    "Finished";
-
-
-
-    startButton.disabled=false;
-
-
-
-    startButton.classList.remove("active");
-
-    showResult();
-
-
+  const counter = setInterval(() => {
+    current += increment;
+    if (current >= value) {
+      current = value;
+      clearInterval(counter);
+    }
+    element.textContent = current;
+  }, 30);
 }
 
-
-
-
-// ================================================
-// RESTART
-// ================================================
-
-
-function restartTest(){
-
-
-    clearInterval(timerInterval);
-
-
-
-    timerInterval=null;
-
-
-
-    started=false;
-
-
-
-    input.value="";
-
-
-
-    input.disabled=true;
-
-
-
-    startButton.disabled=false;
-
-
-
-    startButton.classList.remove("active");
-
-
-
-    document.querySelector(".status")
-    .classList.remove("typing-status");
-
-
-
-    status.textContent =
-    "Ready";
-
-
-
-    timeLeft =
-    Number(timeSelect.value);
-
-
-
-    timerElement.textContent =
-    timeLeft;
-
-
-
-    resetStats();
-
-
-
-    loadParagraph();
-
-
+function celebrate() {
+  confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+  setTimeout(() => {
+    confetti({ particleCount: 100, spread: 120, origin: { y: 0.4 } });
+  }, 500);
 }
 
+function showResult() {
+  animateNumber(finalWpm, Number(wpm.textContent));
+  animateNumber(finalCpm, Number(cpm.textContent));
+  animateNumber(finalMistakes, Number(mistakes.textContent));
+  finalAccuracy.textContent = accuracy.textContent;
 
+  celebrate();
 
+  const best = Math.max(
+    Number(wpm.textContent),
+    Number(localStorage.getItem("bestWpm")) || 0
+  );
+  localStorage.setItem("bestWpm", best);
+  bestScore.textContent = best;
 
-
-// ================================================
-// RESET STATISTICS
-// ================================================
-
-
-function resetStats(){
-
-
-    wpm.textContent=0;
-
-    cpm.textContent=0;
-
-    mistakes.textContent=0;
-
-    accuracy.textContent="100%";
-
-
+  resultModal.classList.add("show");
 }
 
-
-
-
-// ================================================
-// NEXT PARAGRAPH
-// ================================================
-
-
-function nextParagraph(){
-
-
-    loadParagraph();
-
-
-    restartTest();
-
-
-}
-
-
-
-
-
-// ================================================
 // EVENTS
-// ================================================
 
+startButton.addEventListener("click", startTest);
+restartButton.addEventListener("click", restartTest);
+nextButton.addEventListener("click", nextParagraph);
 
-startButton.addEventListener(
-    "click",
-    startTest
-);
+input.addEventListener("input", () => {
+  keySound.currentTime = 0;
+  keySound.play();
+  checkTyping();
+});
 
+themeToggle.addEventListener("click", () => {
+  const isLight = document.body.classList.toggle("light");
+  themeToggle.textContent = isLight ? "🌙" : "☀️";
+});
 
-restartButton.addEventListener(
-    "click",
-    restartTest
-);
-
-
-nextButton.addEventListener(
-    "click",
-    nextParagraph
-);
-
-
-
-// ================================================
 // INITIAL LOAD
-// ================================================
-
 
 loadParagraph();
-
-function checkTyping(){
-
-
-    const typed =
-    input.value;
-
-
-    const characters =
-    paragraphElement.querySelectorAll("span");
-
-
-
-    correctCharacters=0;
-
-    incorrectCharacters=0;
-
-
-
-    characters.forEach(
-        (character,index)=>{
-
-
-            const typedChar =
-            typed[index];
-
-
-            if(typedChar == null){
-
-
-                character.className="";
-
-
-            }
-
-
-            else if(
-                typedChar === character.textContent
-            ){
-
-
-                character.className =
-                "correct";
-
-
-                correctCharacters++;
-
-
-            }
-
-
-            else{
-
-
-                character.className =
-                "incorrect";
-
-
-                incorrectCharacters++;
-
-
-            }
-
-
-        }
-    );
-
-
-
-    updateStatistics();
-
-
-}
-
-input.addEventListener(
-    "input",
-    ()=>{
-
-        keySound.currentTime = 0;
-
-        keySound.play();
-
-        checkTyping();
-
-    }
-);
-
-
-function updateStatistics(){
-
-
-    const typed =
-    input.value.length;
-
-
-
-    const minutes =
-    (new Date()-startTime)
-    /1000/60;
-
-
-
-    if(minutes > 0){
-
-
-        const words =
-        typed / 5;
-
-
-        const calculatedWPM =
-        Math.round(
-            words / minutes
-        );
-
-
-        const calculatedCPM =
-        Math.round(
-            typed / minutes
-        );
-
-
-        wpm.textContent =
-        calculatedWPM;
-
-
-        cpm.textContent =
-        calculatedCPM;
-
-
-    }
-
-
-
-    const total =
-    correctCharacters +
-    incorrectCharacters;
-
-
-
-    if(total > 0){
-
-
-        const acc =
-        Math.round(
-            (correctCharacters / total)
-            *100
-        );
-
-
-        accuracy.textContent =
-        acc + "%";
-
-
-    }
-
-
-    mistakes.textContent =
-    incorrectCharacters;
-
-
-
-}
-
-function showResult(){
-
-
-    animateNumber(
-    finalWpm,
-    Number(wpm.textContent)
-);
-
-
-    finalAccuracy.textContent =
-    accuracy.textContent;
-
-
-    animateNumber(
-    finalCpm,
-    Number(cpm.textContent)
-);
-
-
-    animateNumber(
-    finalMistakes,
-    Number(mistakes.textContent)
-);
-
-    celebrate();
-
-    let best =
-    localStorage.getItem("bestWpm") || 0;
-
-
-
-    if(Number(wpm.textContent) > Number(best)){
-
-
-        best =
-        wpm.textContent;
-
-
-        localStorage.setItem(
-            "bestWpm",
-            best
-        );
-
-
-    }
-
-
-
-    bestScore.textContent =
-    best;
-
-
-
-    resultModal.classList.add(
-        "show"
-    );
-
-
-}
-
-
-
-function celebrate(){
-
-
-    confetti({
-
-        particleCount:150,
-
-        spread:90,
-
-        origin:{
-            y:0.6
-        }
-
-    });
-
-
-
-    setTimeout(()=>{
-
-
-        confetti({
-
-            particleCount:100,
-
-            spread:120,
-
-            origin:{
-                y:0.4
-            }
-
-        });
-
-
-    },500);
-
-
-}
-
-
-function animateNumber(element,value){
-
-
-    let current=0;
-
-
-    const increment =
-    Math.ceil(value/40);
-
-
-
-    const counter =
-    setInterval(()=>{
-
-
-        current += increment;
-
-
-        if(current >= value){
-
-
-            current=value;
-
-
-            clearInterval(counter);
-
-
-        }
-
-
-        element.textContent=current;
-
-
-    },30);
-
-
-}
-
-
-const themeToggle =
-document.getElementById("themeToggle");
-
-
-themeToggle.addEventListener(
-"click",
-()=>{
-
-
-    document.body
-    .classList.toggle("light");
-
-
-    if(
-        document.body
-        .classList.contains("light")
-    ){
-
-        themeToggle.textContent="🌙";
-
-    }
-
-    else{
-
-        themeToggle.textContent="☀️";
-
-    }
-
-
-});
